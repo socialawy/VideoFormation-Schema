@@ -41,7 +41,7 @@ npx @videoformation/blueprint-schema validate my-blueprint.json --report validat
 
 ## 📖 Documentation
 
-- **Complete Schema Reference**: [View Full Documentation](https://videoformation.dev/docs)
+- **Complete Schema Reference**
 - **Examples**: Minimal and complete blueprint examples
 - **API Reference**: Detailed validation options and error handling
 
@@ -49,7 +49,6 @@ npx @videoformation/blueprint-schema validate my-blueprint.json --report validat
 
 - **npm Package**: https://www.npmjs.com/package/@videoformation/blueprint-schema
 - **GitHub Repository**: https://github.com/videoformation/blueprint-schema
-- **Main Documentation**: https://videoformation.dev/docs
 - **Issues**: https://github.com/videoformation/blueprint-schema/issues
 
 ## 📄 License
