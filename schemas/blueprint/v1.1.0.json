@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://videoformation.dev/schemas/blueprint/v1.1.0.json",
+  "$id": "https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/v1.1.0.json",
   "title": "Universal Video Blueprint",
   "description": "JSON-driven video production specification format for videoformation pipeline.",
   "type": "object",
