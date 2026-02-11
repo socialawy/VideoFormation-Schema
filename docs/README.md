@@ -270,10 +270,7 @@ ajv validate \
   -c ajv-formats
 ```
 
-## Examples
-
 ### 📁 Blueprint Examples
-
 | Example | Description | Use Case |
 |---------|-------------|----------|
 | **[minimal.json](../examples/minimal.json)** | Bare minimum required fields - perfect starting template | Learning the basics |
@@ -285,8 +282,8 @@ ajv validate \
 | **[5_cinematic_trailer.json](../examples/5_cinematic_trailer.json)** | High-production trailer with advanced transitions, color grading, and sound design | Cinematic content |
 | **[6_multi_language.json](../examples/6_multi_language.json)** | Content prepared for localization with multiple subtitle tracks and audio versions | International content |
 
-Changelog
+## Changelog
 See [CHANGELOG.md](CHANGELOG.md) for version history.
 
-License
+## License
 [Apache 2.0](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/LICENSE)

@@ -5,17 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VideoFormation Schema</title>
     <meta name="description" content="JSON Schema for video production pipeline specifications">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
-            --bg: #ffffff;
-            --bg-secondary: #f8fafc;
+            --bg: #f6f7f8;
+            --bg-surface: #ffffff;
             --border: #e2e8f0;
             --text: #1e293b;
             --text-muted: #64748b;
+            --text-faint: #94a3b8;
             --code-bg: #f1f5f9;
             --success: #10b981;
+            --purple: #7c3aed;
+            --orange: #ea580c;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f172a;
+                --bg-surface: #1e293b;
+                --border: #334155;
+                --text: #f1f5f9;
+                --text-muted: #94a3b8;
+                --text-faint: #64748b;
+                --code-bg: #334155;
+            }
         }
 
         * {
@@ -25,279 +43,643 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: var(--text);
             background: var(--bg);
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header */
         header {
-            text-align: center;
-            padding: 60px 20px 40px;
+            background: var(--bg-surface);
             border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(8px);
         }
 
-        header h1 {
-            font-size: 2.5rem;
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 14px;
         }
 
-        header p {
-            color: var(--text-muted);
+        .logo-text {
+            font-weight: 700;
             font-size: 1.1rem;
         }
 
-        /* Main content */
-        main {
-            padding: 40px 0;
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
 
-        section {
-            margin-bottom: 40px;
+        .header-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 16px;
+        .header-nav a:hover {
             color: var(--primary);
         }
 
-        /* Schema cards */
-        .schema-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 12px;
+        .github-link svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
         }
 
-        .schema-card h3 {
-            font-size: 1rem;
+        /* Main */
+        main {
+            flex: 1;
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
             font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .version-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Schema URLs Section */
+        .section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 24px 48px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-faint);
+            margin-bottom: 16px;
+        }
+
+        .schema-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .schema-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .schema-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .schema-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 8px;
+        }
+
+        .schema-card-title {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .status-dot.stable {
+            background: var(--text-faint);
+        }
+
+        .version-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-faint);
         }
 
         .schema-card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             margin-bottom: 12px;
         }
 
-        .schema-url {
+        .url-box {
             display: flex;
             align-items: center;
             gap: 8px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 10px 12px;
         }
 
-        .schema-url code {
+        .url-box code {
             flex: 1;
-            background: var(--code-bg);
-            padding: 10px 12px;
-            border-radius: 6px;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-            font-size: 0.85rem;
-            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .copy-btn {
-            background: var(--primary);
-            color: white;
+            background: none;
             border: none;
-            padding: 10px 14px;
-            border-radius: 6px;
+            color: var(--text-faint);
             cursor: pointer;
-            font-size: 0.85rem;
-            transition: background 0.2s;
-            white-space: nowrap;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .copy-btn:hover {
-            background: var(--primary-dark);
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
         }
 
         .copy-btn.copied {
-            background: var(--success);
+            color: var(--success);
         }
 
-        /* Code example */
-        .code-block {
-            background: var(--text);
-            color: #e2e8f0;
-            border-radius: 8px;
+        .copy-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Code Block Section */
+        .code-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 64px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .code-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .code-intro h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .code-intro p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .code-intro a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .code-intro a:hover {
+            text-decoration: underline;
+        }
+
+        .code-window {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--code-bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .window-dots span:nth-child(1) { background: #ef4444; }
+        .window-dots span:nth-child(2) { background: #eab308; }
+        .window-dots span:nth-child(3) { background: #22c55e; }
+
+        .code-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-faint);
+        }
+
+        .code-body {
             padding: 20px;
             overflow-x: auto;
         }
 
-        .code-block pre {
+        .code-body pre {
             margin: 0;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
 
-        .code-block .comment { color: #64748b; }
-        .code-block .key { color: #7dd3fc; }
-        .code-block .string { color: #86efac; }
+        .code-key { color: #2563eb; }
+        .code-string { color: #059669; }
+        .code-number { color: #d97706; }
+        .code-bracket { color: var(--text-faint); }
 
-        /* Nav links */
-        .nav-links {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 40px;
+        @media (prefers-color-scheme: dark) {
+            .code-key { color: #60a5fa; }
+            .code-string { color: #34d399; }
+            .code-number { color: #fbbf24; }
         }
 
-        .nav-links a {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 12px 20px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: background 0.2s;
+        /* Resources Grid */
+        .resources {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
         }
 
-        .nav-links a:hover {
-            background: var(--primary-dark);
+        .resources .section-label {
+            text-align: center;
         }
 
-        .nav-links a.secondary {
-            background: var(--bg-secondary);
-            color: var(--text);
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            display: block;
+            background: var(--bg-surface);
             border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text);
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
 
-        .nav-links a.secondary:hover {
-            background: var(--border);
+        .resource-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .resource-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+
+        .resource-icon.docs { background: rgba(37, 99, 235, 0.1); }
+        .resource-icon.examples { background: rgba(124, 58, 237, 0.1); }
+        .resource-icon.changelog { background: rgba(234, 88, 12, 0.1); }
+        .resource-icon.github { background: var(--code-bg); }
+
+        .resource-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .resource-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
         /* Footer */
         footer {
-            text-align: center;
-            padding: 30px 20px;
+            background: var(--bg-surface);
             border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            padding: 40px 24px;
         }
 
-        footer a {
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .footer-brand svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .footer-info {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .footer-info a {
             color: var(--primary);
             text-decoration: none;
         }
 
-        footer a:hover {
+        .footer-info a:hover {
             text-decoration: underline;
         }
 
-        /* Badge */
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            background: var(--primary);
-            color: white;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .badge.stable {
-            background: var(--success);
+        /* Mobile nav */
+        @media (max-width: 640px) {
+            .header-nav {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>VideoFormation Schema</h1>
-            <p>JSON-driven video production pipeline specification</p>
+        <div class="header-inner">
+            <a href="./" class="logo">
+                <div class="logo-icon">VF</div>
+                <span class="logo-text">VideoFormation Schema</span>
+            </a>
+            <nav class="header-nav">
+                <a href="./docs.html">Docs</a>
+                <a href="./examples.html">Examples</a>
+                <!-- GitHub link stays same -->
+                <a href="https://github.com/socialawy/VideoFormation-Schema" class="github-link" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </a>
+            </nav>
         </div>
     </header>
 
-    <main class="container">
-        <section>
-            <h2>📋 Schema URLs</h2>
-            
-            <div class="schema-card">
-                <h3>Latest <span class="badge">recommended</span></h3>
-                <p>Always points to the most recent stable version</p>
-                <div class="schema-url">
-                    <code id="url-latest">https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/latest.json</code>
-                    <button class="copy-btn" onclick="copyUrl('url-latest', this)">Copy</button>
-                </div>
-            </div>
+    <main>
+        <section class="hero">
+            <div class="version-badge">v1.1.0 — Latest Stable</div>
+            <h1>JSON-driven video production pipeline specification.</h1>
+            <p>An open standard for defining video composition, assets, timelines, and rendering instructions in a portable JSON format.</p>
+        </section>
 
-            <div class="schema-card">
-                <h3>v1.1.0 <span class="badge stable">stable</span></h3>
-                <p>Pinned version for production use</p>
-                <div class="schema-url">
-                    <code id="url-v110">https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/v1.1.0.json</code>
-                    <button class="copy-btn" onclick="copyUrl('url-v110', this)">Copy</button>
+        <section class="section">
+            <div class="section-label">Schema URLs</div>
+            <div class="schema-cards">
+                <div class="schema-card">
+                    <div class="schema-card-header">
+                        <div class="schema-card-title">
+                            <span class="status-dot"></span>
+                            Latest
+                        </div>
+                        <span class="version-tag">v1.1.0</span>
+                    </div>
+                    <p>Always points to the most recent stable version</p>
+                    <div class="url-box">
+                        <code id="url-latest">https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/latest.json</code>
+                        <button class="copy-btn" onclick="copyUrl('url-latest', this)" title="Copy URL">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="schema-card">
+                    <div class="schema-card-header">
+                        <div class="schema-card-title">
+                            <span class="status-dot stable"></span>
+                            Pinned Version
+                        </div>
+                        <span class="version-tag">v1.1.0</span>
+                    </div>
+                    <p>Lock to this version for production stability</p>
+                    <div class="url-box">
+                        <code id="url-v110">https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/v1.1.0.json</code>
+                        <button class="copy-btn" onclick="copyUrl('url-v110', this)" title="Copy URL">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section>
-            <h2>🚀 Quick Start</h2>
-            <div class="code-block">
-<pre><span class="comment">// Add to your blueprint.json</span>
-{
-  <span class="key">"$schema"</span>: <span class="string">"https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/latest.json"</span>,
-  <span class="key">"project_metadata"</span>: {
-    <span class="key">"project_id"</span>: <span class="string">"MY_PROJECT"</span>,
-    <span class="key">"title"</span>: <span class="string">"My Video Project"</span>,
-    <span class="key">"content_type"</span>: <span class="string">"shortfilm"</span>
-  },
-  <span class="key">"global_settings"</span>: {
-    <span class="key">"fps"</span>: 30,
-    <span class="key">"resolution_master"</span>: { <span class="key">"width"</span>: 1920, <span class="key">"height"</span>: 1080 }
-  },
-  <span class="key">"production_sequence"</span>: {
-    <span class="key">"sequences"</span>: []
-  }
-}</pre>
+        <section class="code-section">
+            <div class="code-intro">
+                <h2>Define your video</h2>
+                <p>Start composing videos with a simple JSON blueprint. Define assets, sequences, shots, and timelines declaratively. No complex SDKs required.</p>
+                <a href="./docs.html">
+                    Read the full guide →
+                </a>
+            </div>
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="window-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="code-filename">blueprint.json</span>
+                </div>
+                <div class="code-body">
+<pre><code><span class="code-bracket">{</span>
+  <span class="code-key">"$schema"</span>: <span class="code-string">"https://socialawy.github.io/VideoFormation-Schema/schemas/blueprint/latest.json"</span>,
+  <span class="code-key">"project_metadata"</span>: <span class="code-bracket">{</span>
+    <span class="code-key">"project_id"</span>: <span class="code-string">"MY_PROJECT"</span>,
+    <span class="code-key">"title"</span>: <span class="code-string">"My Video Project"</span>,
+    <span class="code-key">"content_type"</span>: <span class="code-string">"shortfilm"</span>
+  <span class="code-bracket">}</span>,
+  <span class="code-key">"global_settings"</span>: <span class="code-bracket">{</span>
+    <span class="code-key">"fps"</span>: <span class="code-number">30</span>,
+    <span class="code-key">"resolution_master"</span>: <span class="code-bracket">{</span>
+      <span class="code-key">"width"</span>: <span class="code-number">1920</span>,
+      <span class="code-key">"height"</span>: <span class="code-number">1080</span>
+    <span class="code-bracket">}</span>
+  <span class="code-bracket">}</span>,
+  <span class="code-key">"production_sequence"</span>: <span class="code-bracket">{</span>
+    <span class="code-key">"sequences"</span>: <span class="code-bracket">[]</span>
+  <span class="code-bracket">}</span>
+<span class="code-bracket">}</span></code></pre>
+                </div>
             </div>
         </section>
 
-        <div class="nav-links">
-            <a href="./docs.html">📚 Documentation</a>
-            <a href="./examples.html">💡 Examples</a>
-            <a href="./viewer.html#/docs/CHANGELOG.md" class="secondary">📝 Changelog</a>
-            <a href="https://github.com/socialawy/VideoFormation-Schema" class="secondary">GitHub</a>
-        </div>
+        <section class="resources">
+            <div class="section-label">Resources</div>
+            <div class="resource-grid">
+                <a href="./docs.html" class="resource-card">
+                    <div class="resource-icon docs">📚</div>
+                    <h3>Documentation</h3>
+                    <p>Complete reference for all schema objects and properties.</p>
+                </a>
+                <a href="./examples.html" class="resource-card">
+                    <div class="resource-icon examples">💡</div>
+                    <h3>Examples</h3>
+                    <p>Real-world blueprints for common video formats.</p>
+                </a>
+                <a href="./viewer.html#/docs/CHANGELOG.md" class="resource-card">
+                    <div class="resource-icon changelog">📝</div>
+                    <h3>Changelog</h3>
+                    <p>Track the evolution of the schema and new features.</p>
+                </a>
+                <a href="https://github.com/socialawy/VideoFormation-Schema" class="resource-card" target="_blank" rel="noopener">
+                    <div class="resource-icon github">⚡</div>
+                    <h3>GitHub</h3>
+                    <p>Contribute to the spec, report issues, or fork the repo.</p>
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer>
-        <p>
-            Apache 2.0 · 
-            <a href="https://github.com/socialawy/VideoFormation-Schema">socialawy/VideoFormation-Schema</a>
-        </p>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                VideoFormation Schema
+            </div>
+            <div class="footer-info">
+                Licensed under <a href="https://github.com/socialawy/VideoFormation-Schema/blob/main/LICENSE">Apache 2.0</a><br>
+                <a href="https://github.com/socialawy">@socialawy</a>
+            </div>
+        </div>
     </footer>
 
     <script>
         function copyUrl(elementId, button) {
             const code = document.getElementById(elementId);
             navigator.clipboard.writeText(code.textContent).then(() => {
-                button.textContent = 'Copied!';
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                `;
                 button.classList.add('copied');
                 setTimeout(() => {
-                    button.textContent = 'Copy';
+                    button.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    `;
                     button.classList.remove('copied');
                 }, 2000);
             });
