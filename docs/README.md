@@ -82,7 +82,7 @@ Instead of generic `AssetEntry`, the schema provides specialized types:
 
 ```json
 {
-  "$schema": "https://videoformation.dev/schemas/blueprint/v1.1.0.json",
+  "$schema": "https://github.com/socialawy/VideoFormation-Schema/blob/main/schemas/blueprint/v1.1.0.json",
   "project_metadata": {
     "system_codename": "videoformation",
     "project_id": "MINIMAL_01",
@@ -136,7 +136,7 @@ Add to your `.vscode/settings.json`:
   "json.schemas": [
     {
       "fileMatch": ["*/blueprint.json"],
-      "schema": "https://videoformation.dev/schemas/blueprint/v1.1.0.json"
+      "schema": "https://github.com/socialawy/VideoFormation-Schema/blob/main/schemas/blueprint/v1.1.0.json"
     }
   ]
 }
@@ -144,7 +144,7 @@ Add to your `.vscode/settings.json`:
 
 ### WebStorm/IntelliJ
 1. Go to Settings → Languages & Frameworks → Schemas and DTDs
-2. Add JSON Schema: `https://videoformation.dev/schemas/blueprint/v1.1.0.json`
+2. Add JSON Schema: `https://github.com/socialawy/VideoFormation-Schema/blob/main/schemas/blueprint/v1.1.0.json`
 3. Set file pattern: `*/blueprint.json`
 
 ## Integration Examples
