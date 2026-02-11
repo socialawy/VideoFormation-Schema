@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewer - VideoFormation Schema</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --code-bg: #1e293b;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .home-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Loading & Error states */
+        .loading, .error {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading {
+            color: var(--text-muted);
+        }
+
+        .error {
+            color: var(--error);
+        }
+
+        /* Markdown content */
+        .markdown-content {
+            line-height: 1.7;
+        }
+
+        .markdown-content h1 {
+            font-size: 2rem;
+            margin: 1.5em 0 0.5em;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .markdown-content h1:first-child {
+            margin-top: 0;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.5rem;
+            margin: 1.5em 0 0.5em;
+            color: var(--primary);
+        }
+
+        .markdown-content h3 {
+            font-size: 1.25rem;
+            margin: 1.2em 0 0.5em;
+        }
+
+        .markdown-content p {
+            margin: 1em 0;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+
+        .markdown-content li {
+            margin: 0.5em 0;
+        }
+
+        .markdown-content code {
+            background: var(--bg-secondary);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-content pre {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .markdown-content a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 16px;
+            margin: 1em 0;
+            color: var(--text-muted);
+        }
+
+        /* JSON viewer */
+        .json-viewer {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .json-viewer pre {
+            margin: 0;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* JSON syntax highlighting */
+        .json-key { color: #7dd3fc; }
+        .json-string { color: #86efac; }
+        .json-number { color: #fbbf24; }
+        .json-boolean { color: #c084fc; }
+        .json-null { color: #f87171; }
+
+        /* File type badge */
+        .file-type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="./" class="home-link">← VideoFormation Schema</a>
+            <div class="breadcrumb" id="breadcrumb">Loading...</div>
+            <div class="actions">
+                <a href="#" class="btn" id="rawLink" target="_blank">View Raw</a>
+                <button class="btn primary" id="copyBtn">Copy Path</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="content">
+        <div class="loading">Loading file...</div>
+    </main>
+
+    <!-- Markdown renderer -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+
+    <script>
+        // Configuration
+        const BASE_PATH = window.location.pathname.replace(/\/[^/]*$/, '');
+        
+        // Get file path from URL hash
+        function getFilePath() {
+            const hash = window.location.hash.slice(1);
+            return hash || '/docs/README.md';
+        }
+
+        // Update breadcrumb
+        function updateBreadcrumb(path) {
+            const parts = path.split('/').filter(Boolean);
+            document.getElementById('breadcrumb').textContent = parts.join(' / ');
+        }
+
+        // Update raw link
+        function updateRawLink(path) {
+            const rawUrl = BASE_PATH + path;
+            document.getElementById('rawLink').href = rawUrl;
+        }
+
+        // Copy button
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const path = getFilePath();
+            const fullUrl = window.location.origin + BASE_PATH + path;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // Render markdown
+        function renderMarkdown(content) {
+            const main = document.getElementById('content');
+            main.innerHTML = `
+                <span class="file-type-badge">MARKDOWN</span>
+                <div class="markdown-content"></div>
+            `;
+            
+            const contentDiv = main.querySelector('.markdown-content');
+            contentDiv.innerHTML = marked.parse(content);
+
+            // Fix relative links to use viewer
+            contentDiv.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && !href.startsWith('http') && !href.startsWith('#')) {
+                    // Convert relative paths to viewer paths
+                    const currentPath = getFilePath();
+                    const currentDir = currentPath.split('/').slice(0, -1).join('/');
+                    
+                    let newPath;
+                    if (href.startsWith('./')) {
+                        newPath = currentDir + '/' + href.slice(2);
+                    } else if (href.startsWith('../')) {
+                        const upLevels = href.match(/\.\.\//g).length;
+                        const pathParts = currentDir.split('/').filter(Boolean);
+                        const newBase = pathParts.slice(0, -upLevels).join('/');
+                        newPath = '/' + newBase + '/' + href.replace(/\.\.\//g, '');
+                    } else {
+                        newPath = currentDir + '/' + href;
+                    }
+                    
+                    link.setAttribute('href', '#' + newPath);
+                }
+            });
+        }
+
+        // Render JSON with syntax highlighting
+        function renderJSON(content) {
+            const main = document.getElementById('content');
+            
+            try {
+                const parsed = JSON.parse(content);
+                const formatted = JSON.stringify(parsed, null, 2);
+                const highlighted = syntaxHighlightJSON(formatted);
+                
+                main.innerHTML = `
+                    <span class="file-type-badge">JSON</span>
+                    <div class="json-viewer">
+                        <pre>${highlighted}</pre>
+                    </div>
+                `;
+            } catch (e) {
+                showError('Invalid JSON: ' + e.message);
+            }
+        }
+
+        // Simple JSON syntax highlighting
+        function syntaxHighlightJSON(json) {
+            return json
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    let cls = 'json-number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'json-key';
+                        } else {
+                            cls = 'json-string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'json-boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'json-null';
+                    }
+                    return `<span class="${cls}">${match}</span>`;
+                });
+        }
+
+        // Show error
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="error">
+                    <h2>⚠️ Error</h2>
+                    <p>${message}</p>
+                    <a href="./" class="btn" style="margin-top: 20px; display: inline-block;">Back to Home</a>
+                </div>
+            `;
+        }
+
+        // Load and render file
+        async function loadFile(path) {
+            updateBreadcrumb(path);
+            updateRawLink(path);
+
+            try {
+                const response = await fetch(BASE_PATH + path);
+                
+                if (!response.ok) {
+                    throw new Error(`File not found (${response.status})`);
+                }
+
+                const content = await response.text();
+                const extension = path.split('.').pop().toLowerCase();
+
+                if (extension === 'md') {
+                    renderMarkdown(content);
+                } else if (extension === 'json') {
+                    renderJSON(content);
+                } else {
+                    // Fallback: render as plain text
+                    document.getElementById('content').innerHTML = `
+                        <span class="file-type-badge">${extension.toUpperCase()}</span>
+                        <div class="json-viewer">
+                            <pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        // Handle hash changes
+        window.addEventListener('hashchange', () => {
+            loadFile(getFilePath());
+        });
+
+        // Initial load
+        loadFile(getFilePath());
+    </script>
+</body>
+</html>

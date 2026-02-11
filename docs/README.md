@@ -270,18 +270,22 @@ ajv validate \
   -c ajv-formats
 ```
 
-Examples
+## Examples
 
-File | Description
------|------------
-[minimal.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/minimal.json) | Bare minimum valid blueprint
-[full.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/full.json) | Comprehensive example with all features
-[1_talking_head.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/1_talking_head.json) | Simple talking head video
-[2_interview.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/2_interview.json) | Multi-camera interview
-[3_explainer_slides.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/3_explainer_slides.json) | Slide-based explainer
-[4_product_showcase.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/4_product_showcase.json) | Product demo video
-[5_cinematic_trailer.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/5_cinematic_trailer.json) | Cinematic trailer with VFX
-[6_multi_language.json](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/examples/6_multi_language.json) | Multi-language localization
+### 📁 Blueprint Examples
+
+| Example | Description | Use Case |
+|---------|-------------|----------|
+| **[minimal.json](../examples/minimal.json)** | Bare minimum required fields - perfect starting template | Learning the basics |
+| **[full.json](../examples/full.json)** | Comprehensive example showcasing all available schema features | Reference implementation |
+| **[1_talking_head.json](../examples/1_talking_head.json)** | Simple single-camera interview or presentation setup with minimal editing | Talking head videos |
+| **[2_interview.json](../examples/2_interview.json)** | Two-person interview with multiple camera angles and b-roll cutaways | Multi-camera interviews |
+| **[3_explainer_slides.json](../examples/3_explainer_slides.json)** | Educational content combining narration with presentation slides and graphics | Educational content |
+| **[4_product_showcase.json](../examples/4_product_showcase.json)** | Product demonstration with multiple angles, text overlays, and call-to-action | Product demonstrations |
+| **[5_cinematic_trailer.json](../examples/5_cinematic_trailer.json)** | High-production trailer with advanced transitions, color grading, and sound design | Cinematic content |
+| **[6_multi_language.json](../examples/6_multi_language.json)** | Content prepared for localization with multiple subtitle tracks and audio versions | International content |
+
+**Interactive Viewer**: View these examples in the interactive [viewer.html](../viewer.html) or browse them in the [examples gallery](../examples.html).
 
 Changelog
 See [CHANGELOG.md](https://github.com/SocialAwy/VideoFormation-Schema/blob/master/CHANGELOG.md) for version history.
