@@ -1,0 +1,308 @@
+# End-to-End AI Video Tools Analysis
+
+## What I'm Hypothesizing
+
+| Scenario | Implication for videoformation |
+|----------|---------------------------|
+| **AI tools stay black-box** | Spec layer becomes "control plane" that feeds prompts to AI tools. High value. |
+| **AI tools adopt structured input** | Race to define standard. My schema could be it, or compete with theirs. |
+| **Hybrid wins (spec + AI + human)** | My 3-system split is exactly right. Spec is universal, adapters include AI tools. |
+| **Pure AI wins (prompt → final)** | Spec layer becomes niche for "premium" or "complex" projects only. |
+
+--
+
+## Round 1
+This section evaluates major AI video generation tools based on API availability, structured control mechanisms (e.g., camera, timing, characters), and multi-shot consistency. Data is drawn from official sites, developer documentation, and recent analyses as of February 2026. The core question—whether tools support structured video definition (e.g., JSON/timeline specs) or remain prompt-based black boxes—is addressed throughout.
+
+### Tool Comparison
+
+| Tool | API Available? | Structured Input Controls (Camera/Timing/Characters) | Multi-Shot Consistency | Overall Nature |
+|------|----------------|------------------------------------------------------|------------------------|----------------|
+| **Sora (OpenAI)** | Yes, via OpenAI API endpoints like /videos for renders and remixes. Free tier limited; paid scales for production. | Text prompts define subjects, camera (e.g., "dolly in"), lighting, and motion. Reference inputs (images/videos) for character consistency. No native JSON/timeline specs; structured prompts can be used manually (e.g., key-value pairs for elements). Timing via parameters like seconds (up to 60s). | Remix endpoint allows targeted adjustments without full regeneration, maintaining some continuity. Issues persist with object permanence and identity drift across long sequences. | Primarily prompt → black box output, with emerging structured prompting hacks for better control. |
+| **Runway Gen-4** | Yes, API for text-to-video and image-to-video. Integrates with tools like ComfyUI for custom workflows. | Prompt-based with JSON-style structuring for parameters (e.g., color, style, angle). No built-in JSON/timeline spec acceptance, but supports shot-level iteration via multi-pass generations. Camera/timing via descriptive prompts; characters via reference images. | Improved in Gen-4 for cross-clip consistency, but requires prompt-chaining. Common complaints include subtle face changes over time. | Black box with modular prompting; JSON prompting enhances control but isn't native. |
+| **Google Veo 3.1 (Latest Public)** | No public API; available via Flow tool for creatives. Vertex AI for enterprise. | Precise camera controls (e.g., dolly, zoom) and timing via prompts. Characters via reference images for consistency. Features like "add/remove object" and scene extension for structured edits. No JSON specs; UI-based with text prompts. | Scene extension chains clips while maintaining visual/audio consistency. Multi-shot via sequential prompts. Strong for 8-15s sequences but drifts in longer forms. | Prompt-driven black box; JSON prompting examples exist for Veo (e.g., cinematic ads) but not officially supported. |
+| **Kling AI (3.0 Latest)** | Yes, via Higgsfield platform (unlimited access with partnership). API for integrations. | Advanced controls: Multi-shot with camera movement (e.g., macro close-ups). Timing up to 15s continuous. Characters via reference videos for consistency. Native audio/lip-sync. Supports structured prompts but no full JSON pipeline. | Excellent multi-shot: Seamless sequences without stitching. Solves continuity issues like face morphing. Quality ceiling: Photorealistic for ads/UGC, but physics violations in complex actions. | Hybrid: Prompt → output with strong consistency; emerging as less black-box due to native multi-modal integration. |
+| **Pika AI** | Yes, API for generations. | Prompt-based controls for camera, timing, characters. Reference images for consistency. No JSON specs. Quality: High for short clips, but ceiling limited by drift in longer outputs. | Basic multi-shot via extensions; common problems with continuity across cuts. | Black box; focuses on quick generations over deep structure. |
+| **Stable Video (Stability AI, Open-Source)** | Yes, open-source API; integrable with ComfyUI. | Highly customizable via ComfyUI workflows: Inject specs (e.g., parameters for camera, timing). Characters via LoRAs/references. Structured inputs possible through scripts. | Workflows enable iteration for consistency; open-source allows fixing multi-shot issues. | Least black-box: Customizable pipelines with spec injection. |
+
+### Core Question Analysis
+
+No tool fully supports pure "structured definition" (e.g., JSON → complete video) natively as a standard feature; most are prompt → black box with varying degrees of control. However, JSON prompting is emerging as a workaround, where users structure prompts hierarchically (e.g., `{"subject": "...", "camera": "dolly in"}`) for consistency. Tools like JSON2Video enable full JSON pipelines, but they're not end-to-end like Sora. For true structure, hybrid workflows (e.g., Veo + Kling) are common in pros.
+
+### Spec-Driven Competitors
+
+This explores competitors enabling spec-driven (e.g., JSON/timeline) video creation, professional workflows, and open formats.
+
+#### JSON → Video Pipelines
+
+Yes, several exist. Examples:
+
+- **JSON2Video**: Converts JSON specs to videos. Schema: `{"resolution": "full-hd", "scenes": [{"elements": [...]} ]}`. Adopt/extend by adding custom elements (e.g., audio, subtitles).
+- **Shotstack**: JSON timeline control for clips, overlays, audio. Schema: Hierarchical with "timeline", "clips", "transitions". Extensible for custom assets.
+- **Video Notation Schema (Open-Source)**: JSON for multi-scene prompts, including shots, characters, audio. Schema: `{"$schema": "...", "global": {...}, "scenes": [...]}`.
+
+**Why it matters**: Enables scalable, consistent production without black-box randomness; ideal for branding/automation.
+
+#### Professional Workflow
+
+Studios increasingly use "ingredients-to-video" (references constrain AI) over pure prompting. Prompt-chaining (sequential prompts building outputs) is common for complex tasks, but structured (modular prompts + orchestration) wins for reliability.
+
+Examples: Break into steps (research → outline → generate → edit); tools like Vellum AI for chaining.
+
+**Why**: Reduces errors in long-form; 80% time savings with consistency.
+
+#### Open Formats for Video Specs
+
+OpenTimelineIO (OTIO) is the closest for pre-production/editorial. It's a JSON-based interchange for timelines, cuts, and media references (not full pre-prod like storyboards). Alternatives: No direct "OpenTimelineIO for pre-prod," but Video Notation Schema fills gaps.
+
+**Why it matters**: Enables interoperability across tools/studios.
+
+### Multi-Tier Production Services
+
+#### Studio as a Service Products
+
+Yes, tiered platforms exist:
+
+- **Google AI Studio**: Basic (free, limited rates), Plus/Pro ($7.99-$19.99/mo, advanced models/storage), Ultra ($249.99/mo, max access).
+- **Vertex AI**: Free tier, Paid (per-token), Enterprise (custom compliance).
+
+**Why**: Scalable from hobby to pro; e.g., Asana AI Studio tiers for workflows.
+
+### What Creators Pay For
+
+Breakdown per stage:
+
+- **Spec Creation**: $0-5/min (AI scripting tools)
+- **Asset Generation**: $0.50-30/min (e.g., Kling credits)
+- **Final Render**: $0.67-100/min (subscriptions like Vid.AI Pro; agencies $300+)
+
+All three: Bundled in subs ($19-137/mo).
+
+**Why**: Efficiency; AI cuts traditional costs 90%.
+
+#### Quality Ceiling
+
+AI fails at sustained consistency (e.g., physics, causal chains) beyond 15-60s; 95% enterprise AI projects fail ROI due to quality gaps. Human pipelines win for complex narratives, judgment, and error-free long-form. Ceiling: AI for prototypes/ads; humans for films.
+
+### The Pain Points
+
+Creator complaints from recent X discussions (Latest mode, up to Feb 2026):
+
+- **Sora Consistency Issues**: Frequent identity drift (e.g., faces change subtly); object permanence fails (items morph/disappear). "Sora adventures... a lot of consistency issues" [post:86]. Grok's video gen blurs over time [post:94].
+- **AI Video Character Continuity**: Morphing across shots; "Character consistency... the hardest problem" [post:97]. Kling 3.0 resolves but earlier models fail [post:81][post:92].
+- **Multi-Shot AI Video Problems**: Breaks continuity on cuts; "Multi-shot flow... biggest challenge" [post:96]. Wan 2.6/PixVerse improve but stitching needed [post:125][post:127].
+- **AI Video for Long-Form Content**: Drifts beyond 15s; "Long-form needs sustained... continuity" [post:112]. Tools like Skyreels help but quality drops [post:138][post:133][post:135].
+
+---
+## Round 2
+### 🧭 Executive Summary: The State of Structured Control
+
+#### The Reality
+Major platforms like Sora (OpenAI), Runway Gen-4, and Google Veo primarily expose text and image inputs through their official APIs. True structural control over timing, characters, and multi-shot consistency via a native JSON schema is not a standard offering.
+
+#### The Workaround
+The professional community, especially for tools like Google Veo, has pioneered using structured JSON as a prompt-engineering technique to improve consistency and control, treating the model as a rendering engine.
+
+#### The Frontier
+Open-source tools like ComfyUI offer the highest potential for structured, node-based workflows where you can inject and control every specification. "Studio as a service" platforms are emerging to solve multi-shot continuity, which remains a key pain point.
+
+### 🔬 Detailed Analysis by  Inquiry Framework
+
+Here is a detailed breakdown of the AI video generation ecosystem, structured.
+
+#### 1. End-to-End AI Video Tools: Core Control Mechanisms
+
+The table below summarizes the primary control paradigms for leading tools, showing a gap between community methods and official capabilities.
+
+| Tool & Status | Primary Control Method | Structured Input & Multi-Shot Capabilities | Key Limitation for Production |
+|---------------|----------------------|---------------------------------------------|------------------------------|
+| **Sora 2 (OpenAI)** | Official API for text/image-to-video with async job management. | Prompt-based. Multi-shot consistency is a claimed strength but controlled via descriptive prompts, not a timeline spec. | Lacks native programmatic scene breakdown. Consistency relies on model interpretation, not director control. |
+| **Runway Gen-4** | Text prompt + input image. API focuses on simplicity and describing motion. | No official JSON spec. "Director Mode" uses cinematography keywords (e.g., "dolly in") within text prompts for camera control. | Encourages single-scene generations. Complex multi-shot sequences require external stitching and manual consistency management. |
+| **Google Veo 3.1** | Text prompt + "Ingredients" (reference images for style/characters). | Community-led JSON prompting is a best practice. Users structure prompts as JSON to isolate lighting, subject, and camera data for precise, repeatable results. | JSON structure is a prompt-engineering tactic, not an official API schema. The model interprets the concatenated JSON as text. |
+| **Pika 2.1/2.5** | Text, image, and in-video editing tools (Pika-Additions). | Strong on object-level control within a clip (e.g., swapping elements). Not designed for structured multi-shot narratives. | A creative tool for effects and edits, not a pipeline for spec-driven, multi-scene production. |
+| **Stable Video & ComfyUI** | Open-source, node-based workflows. | Maximum control. You can design visual pipelines (graphs) to inject and process any spec (text, image, control nets) programmatically. | Requires technical expertise to build and maintain. The workflow is the structure, not a simple JSON call. |
+
+#### 2. Spec-Driven Competitors & Professional Workflows
+
+##### JSON → Video Pipelines
+As noted, this exists as a community schema, not a platform standard. Professionals use it to pre-visualize and enforce shot discipline, but it compiles to a text prompt for the AI.
+
+##### Professional Hybrid Workflow
+Studios are not using AI for final, spec-perfect output. The dominant professional use is for pre-production (storyboards, concept reels) and asset generation (B-roll, backgrounds) within a traditional, human-edited pipeline.
+
+##### Open Formats
+There is no equivalent to OpenTimelineIO for AI pre-production. The structural control problem is currently solved at the workflow level (using tools like ComfyUI) or the prompt-engineering level (using structured JSON).
+
+#### 3. Multi-Tier Production Services & Quality Ceiling
+
+##### "Studio as a Service"
+Products like LTX Studio and TensorShots are emerging. They offer tiered plans and project-based workflows that guide users from a brief to a multi-scene video, handling some continuity issues internally. They abstract the complexity of prompting different shots.
+
+##### What Creators Pay For
+Pricing is primarily for final render time (seconds of output at a resolution). Advanced tiers add features like brand consistency tools, collaboration, and priority rendering.
+
+##### The Quality Ceiling
+AI generation currently fails at reliable long-form narrative continuity. Key pain points are character continuity (face, clothing details across shots), temporal stability (object physics over time), and deliberate cinematic pacing. This is where human editing and structured pipelines remain essential.
+
+#### 4. Confirmed Pain Points
+
+ identified complaints are central to current discourse:
+
+* **Multi-shot consistency**: This is the core architectural challenge. Most AI models have "no shared memory across shots," treating each generation as independent.
+* **Character continuity**: Tools like Runway's "Elements" and Kling's "Elements" feature are direct responses to this, using image references to anchor character appearance across generations.
+* **Long-form content**: This is the frontier. While Sora 2 can generate longer clips (up to 60 seconds), creating a coherent 3-minute video requires external scripting, shot-by-shot generation, and manual editing/stitching—a structured pipeline in itself.
+
+### 💡 Strategic Recommendations
+
+For integrating AI video into a production pipeline today:
+
+* **For Pre-Vis & Assets**: Use Sora 2 or Veo with structured JSON prompts to generate high-quality concept clips and background assets.
+* **For Multi-Shot Consistency**: Adopt a "studio" platform like LTX Studio or develop a pipeline around Runway with its character consistency features.
+* **For Maximum Control**: Invest in building a ComfyUI workflow, which offers the most programmable and future-proof structure for R&D and specific production needs.
+
+The industry is clearly moving from generation to orchestration. The tools that will dominate will likely be those that provide a robust framework for managing continuity and structure, not just the best single-prompt physics.
+
+--
+
+### Fact-Check
+
+### Critical Corrections
+
+#### 1. Disney-OpenAI Partnership (Confirmed)
+The document is correct about the Disney partnership. In December 2025, Disney and OpenAI reached a three-year licensing agreement where Disney invested $1 billion in OpenAI and licensed over 200 characters from Disney, Marvel, Pixar, and Star Wars for use in Sora OpenAI. The partnership allows users to generate short videos with these characters starting in early 2026, with curated content appearing on Disney+.
+
+#### 2. Kling 3.0 vs. "3.0" Description
+The document appears to reference Kling 3.0, but Kling 3.0 was just released on February 4-5, 2026 (literally days ago). Kling 3.0 launched with three model variants: Kling Video 3.0, Kling Video 3.0 Omni, and Kling Image 3.0 Omni, featuring extended 15-second video generation with custom duration control, multi-shot editing supporting up to 6 camera cuts, and native audio-visual synchronization Gaga AI. This is much more recent than the document implies.
+
+**Key Kling 3.0 Features (verified):**
+
+* 15-second maximum video generation with custom duration selection
+* Multi-shot storyboard feature allowing specification of duration, shot size, perspective, and camera movements for each shot (Yahoo Finance)
+* Native audio generation across multiple languages including English, Chinese, Japanese, Korean, Spanish, and accents such as American, British and Indian (Yahoo Finance)
+* Multi-character dialogue scenes with different languages per character
+
+#### 3. Veo 3.1 Update
+Enhanced Veo 3.1 capabilities were released in Gemini API in January 2026, featuring improved Ingredients to Video that preserves character identity and background details, native vertical format videos for 9:16 social content, and new 4K and improved 1080p definition (Google). The document references "Veo 3.1" but doesn't mention these recent enhancements.
+
+#### 4. Sora 2 Clarification
+Sora 2 was released in late 2025 and features synchronized dialogue and sound effects, native audio generation, and improved physics accuracy (OpenAI). The Sora API provides endpoints for creating, remixing, and managing videos, with two model variants: sora-2 for rapid iteration and sora-2-pro for production-quality output (OpenAI).
+
+**Important API Detail**: At the time of the latest help center update, there is no public API access for Sora available through ChatGPT Business or consumer accounts (OpenAI Help Center), though API documentation exists for developer access.
+
+### Major Additions
+
+#### 5. JSON Prompting Reality Check
+The document correctly identifies JSON prompting as a community practice, not an official feature. However, JSON prompting in Google Veo 3/3.1 is indeed a structured community-developed approach where users format instructions in JSON to provide clearer structure for AI, organizing requests into segments like scene description, camera moves, characters, colors, and sound (GitHub/Artlist).
+
+**Critical clarification**: While JSON prompting offers more structure and precision for AI video generation, it comes with trade-offs, and both JSON and text approaches have strengths and limitations depending on creative goals (Artlist).
+
+#### 6. Runway Gen-4 API Status
+Runway API provides access to Gen-4 Turbo and Gen-4 Images, but API access for Gen-4.5 is coming soon (Runway Developer API). The document doesn't distinguish between Gen-4 and newer Gen-4.5.
+
+#### 7. Missing: Recent Price Updates
+* Veo 3.1 Fast costs $0.15 per second of video (saving 62-80% compared to Standard version's $0.40-$0.75), using 20 credits/video vs. 100 credits/video for Standard (Apiyi.com Blog)
+* Runway API credits cost $0.01 per credit, with pricing varying by generation type (Runway Developer API)
+
+#### 8. Quality Ceiling Update
+The document mentions a 15-60s quality ceiling, but Kling 3.0 now supports 15-second maximum duration with custom control (Gaga AI), and Sora 2 can generate videos up to 60 seconds (OpenAI). The industry is actively pushing these boundaries.
+
+### Bottom Line
+The document is fundamentally accurate about the state of structured control (mostly prompt-based with emerging JSON techniques) and pain points (consistency, multi-shot, long-form). The main updates needed are:
+
+* **Timing** - Kling 3.0 just launched, so any historical references need updating
+* **Disney partnership** - This is a major validated deal, not speculation
+* **Veo 3.1 enhancements** - Recent January 2026 improvements
+* **API availability nuances** - Sora API exists for developers but not all access tiers
+
+The core thesis about "generation to orchestration" and the gap between structured specs and actual capabilities remains valid and well-supported.
+
+--
+
+## Key Findings
+
+* **The Gap is Real**: No major AI video tool natively accepts structured JSON specs as input. They're all prompt-based black boxes with varying degrees of control through prompt engineering.
+* **JSON Prompting is a Workaround**: The community has developed JSON prompting as a technique (especially for Veo), but it's not an official API schema - it's just structured text that the model interprets.
+* **Multi-shot Consistency is THE Pain Point**: Character continuity, temporal stability, and deliberate pacing are the major failures. Tools like Kling 3.0's multi-shot storyboard feature (6 camera cuts, duration control per shot) are direct responses.
+* **ComfyUI/Open Source = Maximum Control**: For true spec injection, open-source workflows are the answer.
+* **"Studio as a Service" is Emerging**: LTX Studio, TensorShots are building the abstraction layer.
+* **The Industry is Moving from Generation to Orchestration**: This is exactly what videoformation does.
+
+--
+
+## Key insight: blueprint.json shouldn't just validate — it should compile to multiple targets.
+```
+blueprint.json (Universal Spec)
+       │
+       ├──► Kling 3.0 Storyboard JSON (multi-shot API)
+       ├──► Veo 3.1 JSON Prompt (community format)
+       ├──► Sora 2 Structured Prompt (text with refs)
+       ├──► ComfyUI Workflow Nodes (full injection)
+       ├──► Traditional Pipeline (assets.md → manual tools)
+       └──► Doxascope/My Tools (personal bridge)
+```
+This makes System 2 (NODE 3.5) a compiler, not just a router.
+
+--
+
+## Kling 2.6 (not 3.0) — Free tier limits:
+
+10s max duration
+Single generation (no multi-shot storyboard visible)
+3 trials left at 1080p
+The multi-shot feature (6 camera cuts) from Kling 3.0 is likely:
+
+In "Canvas" or "Omni" tabs (worth checking)
+VIP/paid only
+API-only (see the "API" tab with notification dot)
+
+## Kling API Analysis
+### Canvas Features
+"Storyboard" and "Multi-Angle Storyboard" — structured multi-shot input exists
+Agent-based: "generate a 1-minute cyberpunk storyboard" suggests it can parse intent
+### Omni Features
+Character presets with consistency (Jinx, Sarah, etc.)
+"Generate next shot, use Start & End Frames" — shot chaining
+Duration: 3s-10s granular control
+
+### API - Text to Video — THE KEY
+Field	Type	Values	Mapping from Blueprint
+model_name	string	kling-v1, v2-master, v2-5-turbo, v2-6	Fixed choice
+prompt	string	Max 2500 chars	shot.action_notes + style
+negative_prompt	string	Max 2500 chars	Could derive from constraints
+sound	enum	on/off	audio_timeline presence
+cfg_scale	float	0-1	Higher = stricter prompt adherence
+mode	enum	std/pro	Quality tier selection
+camera_control.type	enum	empty, down_back, forward_up, right_turn_forward, left_turn_forward	Derive from camera.path
+camera_control.config.horizontal	float	-10 to 10	camera.path[].position[0] delta
+camera_control.config.vertical	float	-10 to 10	camera.path[].position[1] delta
+camera_control.config.pan	float	-10 to 10	Rotation around x-axis
+camera_control.config.tilt	float	-10 to 10	Rotation around y-axis
+camera_control.config.roll	float	-10 to 10	Rotation around z-axis
+
+### Sidebar Features (worth exploring)
+AI Multi-Shot — likely the 3.0 storyboard feature
+Multi-Elements — character/object consistency
+Lip-Sync — audio sync
+Video Extension — shot chaining
+
+### What This API Actually Does
+Field	Reality
+Input	Single frontal image of a character/element
+Output	Multiple images (index 0-9) — different angles of same element
+Purpose	Generate character reference sheets for consistency
+Video?	No — this generates IMAGES, not video
+This is for creating consistent character turnarounds, not for generating a storyboard video.
+
+### Revised Understanding of Kling Multi-Shot Video
+The "6 camera cuts" feature from Kling 3.0 is likely:
+
+Possibility	Where	API Access
+Canvas "Storyboard" UI	Web only	❌ Not in API
+"Multi-Elements" + chained calls	API	✅ Manual orchestration
+"Video Extension"	API	✅ Shot chaining
+The path to multi-shot video via Kling API:
+1. Generate character elements (AI Multi-Shot → reference images)
+2. Generate shot 1 (Text-to-Video + element reference)
+3. Generate shot 2 (Text-to-Video + element + Video Extension from shot 1's last frame)
+4. ... repeat
+5. Stitch via orchestrator
